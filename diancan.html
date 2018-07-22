@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .product-control {
+            height: 40px;
+            display: flex;
+            justify-content: space-between;
+            border: 1px solid #000;
+            border-radius: 20px;
+            width: 500px;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .control span {
+            border: 1px solid #000;
+            padding: 8px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all .5s;
+        }
+
+        .control span:hover {
+            color: white;
+            background-color: skyblue;
+            font-weight: 900;
+            /* font-size:20px; */
+        }
+    </style>
+</head>
+
+<body>
+    <div id="product">
+        <!-- key 写一个唯一的标记即可 目的 让vue 可以复用dom元素 提升性能  -->
+        <button-counter v-for="(item, index) in foodList" :key="item" v-bind:title="item"></button-counter>
+    </div>
+</body>
+
+</html>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!-- 可以把模板抽到外面 -->
+<script type="text/html" id="tem">
+    <div class="product-control">
+            <h2>{{title}}</h2>
+            <div class="control">
+                <span v-on:click="num++">+</span>
+                <span>{{num}}</span>
+                <span v-on:click="sub">-</span>
+            </div>
+        </div>
+</script>
+<script>
+
+    // 自定义组件
+    // 定义一个名为 button-counter 的新组件
+    /*
+        父组件 往 子组件传值
+    */
+    Vue.component('button-counter', {
+        // 组件数据传递
+        props: ['title'],
+        data: function () {
+            return {
+                num: 0
+            }
+        },
+        methods: {
+            sub() {
+                this.num--;
+                if (this.num < 0) { this.num = 0; }
+            }
+        },
+        // template 可以写 html结构 写 定义的模板(#id) 
+        template: `#tem`
+    })
+
+    let app = new Vue({
+        el: "#product",
+        data: {
+            foodList: [
+                '麻小',
+                '烤鱼',
+                '烤羊排',
+                '烤鸭',
+                '石锅鸡',
+                '跳跳蛙'
+            ]
+        }
+    })
+
+
+</script>
